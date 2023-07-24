@@ -8,8 +8,7 @@ export default function parse() {
 	outputElem.innerText = '';
 
 	for (const line of input.split('\n')) {
-		const lineParts = line.match(/^\s*(\/\S+)\s*(\S+=\S+)?\s*(\/\S+)\s*(\d+)?(!)?/);
-		console.debug(lineParts);
+		const lineParts = line.match(/^\s*(\/\S+)\s*((?:(?:\S+=\S+)\s*)*)\s*(\/\S+)\s*(\d+)?(!)?/);
 		if (!lineParts) continue;
 		let [_, from, query, to, code, forced] = lineParts;
 		code = +code || 200;
@@ -18,10 +17,10 @@ export default function parse() {
 		const output = `<li>
 			<b><code>${line}</code></b>
 			<ul>
-				<li>From: <code>${from}${query ? '?' + query : ''}</code>
+				<li>From: <code>${from}${query ? '?' + query.trim().replaceAll(' ', '&') : ''}</code>
 				<li>To: <code>${to}</code>
 				<li>Code: ${code} ${HTTP_CODES[code]}
-				<li>Forced? ${forced ? 'yes' : 'no'}
+				<li>Forced: ${forced ? 'yes' : 'no'}
 			</ul>
 		</li>`;
 		outputElem.innerHTML += output;
