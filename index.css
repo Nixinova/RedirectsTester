@@ -3,8 +3,8 @@ body {
 }
 
 #input {
-	height: 20em;
-	width: 80vw;
+	min-height: 20em;
+	min-width: 80vw;
 	padding: 1em;
 	border: 2px solid #444;
 	white-space: pre;
