@@ -1,0 +1,11 @@
+body {
+	font-family: sans-serif;
+}
+
+#input {
+	height: 20em;
+	width: 80vw;
+	padding: 1em;
+	border: 2px solid #444;
+	white-space: pre;
+}
