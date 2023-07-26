@@ -28,7 +28,7 @@ function randomPath() {
 	return result.join('/');
 }
 
-const validLine = /^\s*((?:\w+:)?\/\S+)\s*((?:(?:\S+=\S+)\s*)*)\s+((?:\w+:)?\/\S+)\s*(\d+)?(!)?/;
+const validLine = /^\s*((?:\w+:)?\/\S*)\s*((?:(?:\S+=\S+)\s*)*)\s+((?:\w+:)?\/\S*)\s*(\d+)?(!)?\s*(Country=\S+)?\s*(Language=\S+)?/;
 const plchldrRegex = /:\w+/g;
 
 export default function parse() {
@@ -42,7 +42,7 @@ export default function parse() {
 		const lineParts = line.match(validLine);
 		if (!lineParts) continue;
 
-		let [_, from, query, to, code, forced] = lineParts;
+		let [_, from, query, to, code, forced, country, language] = lineParts;
 		code = +code || 200;
 		forced = !!forced;
 		let queryString = query ? '?' + query.trim().replaceAll(' ', '&') : '';
@@ -69,11 +69,13 @@ export default function parse() {
 		const output = `<li>
 			<b><code>${line}</code></b>
 			<ul>
-				<li>From: <code>${from}${finalQuery}</code>
-				<li>To: <code>${to}</code>
-				<li>Code: ${code} ${HTTP_CODES[code]}
-				<li>Forced: ${forced ? 'yes' : 'no'}
-				<li>Example: ${exampleFrom} &rarr; ${exampleTo}
+				<li><b>From:</b> <code>${from}${finalQuery}</code>
+				<li><b>To:</b> <code>${to}</code>
+				<li><b>Code:</b> ${code} ${HTTP_CODES[code]}
+				${forced ? '<li>Forced' : ''}
+				${country ? `<li>When ${country}` : ''}
+				${language ? `<li>When ${language}` : ''}
+				<li><b>Example:</b> ${exampleFrom} &rarr; ${exampleTo}
 			</ul>
 		</li>`;
 		outputElem.innerHTML += output;
